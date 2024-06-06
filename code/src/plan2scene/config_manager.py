@@ -100,8 +100,18 @@ class ConfigManager:
         self.surfaces = parse_config(osp.join(args.labels_path, "surfaces.json"))
         self.room_types = parse_config(osp.join(args.labels_path, "room_types.json"))
 
-        self.texture_prop.node_embedding_dim = len(self.room_types) + 3 * (self.texture_gen.combined_emb_dim + 1)
-        self.texture_prop.node_target_dim = 3 * (self.texture_gen.combined_emb_dim)
+        # Debugging: Check if texture_prop and room_types are loaded correctly
+        if self.texture_prop is None:
+            logging.error("Failed to load texture_prop configuration.")
+        if self.room_types is None:
+            logging.error("Failed to load room_types configuration.")
+
+        if self.texture_prop and self.room_types:
+            self.texture_prop.node_embedding_dim = len(self.room_types) + 3 * (self.texture_gen.combined_emb_dim + 1)
+            self.texture_prop.node_target_dim = 3 * (self.texture_gen.combined_emb_dim)
+        else:
+            # Handle the case where texture_prop or room_types is not loaded
+            raise ValueError("Missing configuration: texture_prop or room_types could not be loaded.")
 
         self.drop_fraction = args.drop
         logging.info("Args: %s" % str(self.args))

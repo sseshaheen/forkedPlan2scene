@@ -11,7 +11,7 @@ class Config:
     def __init__(self, config_dict: dict):
         """
         Initialize configuration item using a dictionary.
-        :param d:
+        :param config_dict: Configuration dictionary.
         """
         for k, v in config_dict.items():
             if isinstance(v, dict):
@@ -24,16 +24,21 @@ class Config:
 
 def parse_config(config_path: str):
     """
-    Parses a json config file into a Config object.
-    :param config_path: Path to the json config file.
+    Parses a JSON config file into a Config object.
+    :param config_path: Path to the JSON config file.
     """
     if not osp.exists(config_path):
-        logging.warning(f"Config file not found: {config_path}")
+        logging.error(f"Config file not found: {config_path}")
         return None
 
-    with open(config_path, "r") as f:
-        config_dict = json.loads(f.read())
-    if isinstance(config_dict, dict):
-        return Config(config_dict)
-    else:
-        return config_dict
+    try:
+        with open(config_path, "r") as f:
+            config_dict = json.loads(f.read())
+            if isinstance(config_dict, dict):
+                return Config(config_dict)
+            else:
+                logging.error(f"Config file {config_path} does not contain a dictionary.")
+                return None
+    except Exception as e:
+        logging.error(f"Error reading configuration file {config_path}: {e}")
+        return None
