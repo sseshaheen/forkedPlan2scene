@@ -1,5 +1,5 @@
 {
-    "device": "cuda",
+    "device": "cpu",
     "network_arch":{
         "module": "plan2scene.texture_prop.tp_models.simple_gated_gnn",
         "class_name": "SimpleGatedGNN",

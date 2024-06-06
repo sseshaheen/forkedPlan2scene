@@ -11,6 +11,6 @@
         "minimum_crop_count": 2048,
         "batch_size": 32,
         "dims": 2048,
-        "device": "cuda"
+        "device": "cpu"
     }
 }

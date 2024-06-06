@@ -28,6 +28,6 @@
             "drop_last": true
         }
     },
-    "device": "cuda",
+    "device": "cpu",
     "substances": ["wood", "painted", "carpet", "tile"]
 }
