@@ -73,7 +73,7 @@ class TexturePropTrainer(AbstractTrainer):
         """
         self._tg_predictor = TextureGenPredictor(conf=load_conf_eval(config_path=self.conf.texture_gen.texture_synth_conf),
                                                  rgb_median_emb=self.conf.texture_gen.rgb_median_emb)
-        self._tg_predictor.load_checkpoint(checkpoint_path=self.conf.texture_gen.checkpoint_path)
+        self._tg_predictor.load_checkpoint(checkpoint_path=self.conf.texture_gen.checkpoint_path, map_location=torch.device('cpu'))
         self._combined_emb_dim = self.conf.texture_gen.combined_emb_dim
         if self.system_conf.graph_generator.include_enable_in_target:
             self._combined_emb_dim += 1

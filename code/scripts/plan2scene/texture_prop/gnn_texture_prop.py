@@ -1,5 +1,6 @@
 #!/bin/python3
 
+import torch
 from plan2scene.common.house_parser import parse_houses, load_house_crops, load_house_texture_embeddings, \
     save_house_crops, save_house_texture_embeddings
 from plan2scene.config_manager import ConfigManager
@@ -27,10 +28,10 @@ def process(conf: ConfigManager, houses: dict, checkpoint_path: str, keep_existi
     tg_predictor = TextureGenPredictor(
         conf=load_conf_eval(config_path=conf.texture_gen.texture_synth_conf),
         rgb_median_emb=conf.texture_gen.rgb_median_emb)
-    tg_predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path)
+    tg_predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path, map_location=torch.device('cpu'))
 
     tp_predictor = TexturePropPredictor(conf, conf.texture_prop)
-    tp_predictor.load_checkpoint(checkpoint_path=checkpoint_path)
+    tp_predictor.load_checkpoint(checkpoint_path=checkpoint_path, map_location=torch.device('cpu'))
     propagate_textures(conf, houses, tg_predictor, tp_predictor, keep_existing_predictions, use_train_graph_generator, use_val_graph_generator)
 
 

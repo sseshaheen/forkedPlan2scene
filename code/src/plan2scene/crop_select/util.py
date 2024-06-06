@@ -1,3 +1,4 @@
+import torch
 from plan2scene.common.image_description import ImageDescription, ImageSource
 from plan2scene.common.residence import Room, House
 from plan2scene.config_manager import ConfigManager
@@ -49,7 +50,7 @@ def fill_house_textures(conf: ConfigManager, house: House, image_source: ImageSo
         predictor = TextureGenPredictor(
             conf=load_conf_eval(config_path=conf.texture_gen.texture_synth_conf),
             rgb_median_emb=conf.texture_gen.rgb_median_emb)
-        predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path)
+        predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path, map_location=torch.device('cpu'))
 
     for room_index, room in house.rooms.items():
         assert isinstance(room, Room)
@@ -79,7 +80,7 @@ def fill_textures(conf: ConfigManager, houses: dict, image_source: ImageSource, 
         predictor = TextureGenPredictor(
             conf=load_conf_eval(config_path=conf.texture_gen.texture_synth_conf),
             rgb_median_emb=conf.texture_gen.rgb_median_emb)
-        predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path)
+        predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path, map_location=torch.device('cpu'))
 
     for i, (house_key, house) in enumerate(houses.items()):
         if log:

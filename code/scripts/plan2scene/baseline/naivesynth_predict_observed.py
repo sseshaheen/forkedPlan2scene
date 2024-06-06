@@ -74,7 +74,7 @@ if __name__ == "__main__":
     predictor = TextureGenPredictor(
         conf=load_conf_eval(config_path=conf.texture_gen.texture_synth_conf),
         rgb_median_emb=conf.texture_gen.rgb_median_emb)
-    predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path)
+    predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path, map_location=torch.device('cpu'))
 
     # Process houses
     for i, (house_key, house) in enumerate(houses.items()):

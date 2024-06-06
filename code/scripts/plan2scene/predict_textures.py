@@ -1,3 +1,4 @@
+import torch
 import argparse
 import os.path as osp
 import os
@@ -54,7 +55,7 @@ def process_observed_surfaces(conf: ConfigManager, house: House) -> None:
     tg_predictor = TextureGenPredictor(
         conf=load_conf_eval(config_path=conf.texture_gen.texture_synth_conf),
         rgb_median_emb=conf.texture_gen.rgb_median_emb)
-    tg_predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path)
+    tg_predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path, map_location=torch.device('cpu'))
 
     # Compute texture embeddings for observed surfaces (Code adapted from ./code/scripts/preprocessing/fill_room_embeddigs.py)
     fill_texture_embeddings(conf, house, tg_predictor)

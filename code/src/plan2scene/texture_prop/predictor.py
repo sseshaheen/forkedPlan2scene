@@ -21,12 +21,13 @@ class TexturePropPredictor:
         self.conf = conf
         self.net = get_network(conf, system_conf.network_arch).to(system_conf.device)
 
-    def load_checkpoint(self, checkpoint_path) -> None:
+    def load_checkpoint(self, checkpoint_path, map_location=None) -> None:
         """
         Loads a checkpoint.
         :param checkpoint_path: Path to checkpoint.
+        :param map_location: Device to map the checkpoint.
         """
-        ckpt = torch.load(checkpoint_path)
+        ckpt = torch.load(checkpoint_path, map_location=map_location)
         logging.info("Loaded: %s" % (checkpoint_path))
         logging.info(self.net.load_state_dict(ckpt["model_state_dict"]))
 

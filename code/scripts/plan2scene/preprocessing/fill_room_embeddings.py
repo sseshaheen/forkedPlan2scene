@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import torch
 from plan2scene.common.house_parser import parse_houses, save_house_texture_embeddings, save_house_crops
 from plan2scene.common.image_description import ImageDescription, ImageSource
 from plan2scene.common.residence import Room, House
@@ -29,7 +30,7 @@ def process(conf: ConfigManager, houses: dict, output_path: str) -> None:
     predictor = TextureGenPredictor(
         conf=load_conf_eval(config_path=conf.texture_gen.texture_synth_conf),
         rgb_median_emb=conf.texture_gen.rgb_median_emb)
-    predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path)
+    predictor.load_checkpoint(checkpoint_path=conf.texture_gen.checkpoint_path, map_location=torch.device('cpu'))
 
     for i, (house_key, house) in enumerate(houses.items()):
         logging.info("[%d/%d] Processing %s" % (i, len(houses), house_key))

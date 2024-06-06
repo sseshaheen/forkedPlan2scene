@@ -48,12 +48,13 @@ class TextureGenPredictor:
         self.gram_matrix = utils_nt.GramMatrix().to(conf.device)
         self.criterion = nn.MSELoss(reduction="none")
 
-    def load_checkpoint(self, checkpoint_path: str) -> None:
+    def load_checkpoint(self, checkpoint_path: str, map_location=None) -> None:
         """
         Load saved checkpoint
         :param checkpoint_path: Path to checkpoint
+        :param map_location: Device to map the checkpoint.
         """
-        ckpt = torch.load(checkpoint_path)
+        ckpt = torch.load(checkpoint_path, map_location=map_location)
         logging.info(
             "Loading Checkpoint %s: %s" % (checkpoint_path, self.net.load_state_dict(ckpt["model_state_dict"])))
 
