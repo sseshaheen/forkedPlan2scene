@@ -24,7 +24,7 @@ class Config:
 
 def parse_config(config_path: str):
     """
-    Parses a JSON config file into a Config object.
+    Parses a JSON config file into a Config object or a list.
     :param config_path: Path to the JSON config file.
     """
     if not osp.exists(config_path):
@@ -34,10 +34,13 @@ def parse_config(config_path: str):
     try:
         with open(config_path, "r") as f:
             config_dict = json.loads(f.read())
+            logging.debug(f"Contents of {config_path}: {config_dict}")
             if isinstance(config_dict, dict):
                 return Config(config_dict)
+            elif isinstance(config_dict, list):
+                return config_dict
             else:
-                logging.error(f"Config file {config_path} does not contain a dictionary.")
+                logging.error(f"Config file {config_path} does not contain a dictionary or a list.")
                 return None
     except Exception as e:
         logging.error(f"Error reading configuration file {config_path}: {e}")
