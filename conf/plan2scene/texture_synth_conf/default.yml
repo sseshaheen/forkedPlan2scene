@@ -1,5 +1,5 @@
 cache_dataset: false
-device: cuda
+device: cpu
 num_workers: 8
 dim: 2
 noise:
