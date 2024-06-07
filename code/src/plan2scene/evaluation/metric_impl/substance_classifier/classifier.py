@@ -7,13 +7,13 @@ import logging
 from config_parser import parse_config, Config
 
 
-def load_checkpoint(checkpoint_path, model) -> None:
+def load_checkpoint(checkpoint_path, model, map_location=None) -> None:
     """
     Load checkpoint into the model.
     :param checkpoint_path: Saved path of the checkpoint.
     :param model: Model to load the checkpoint into.
     """
-    ckpt = torch.load(checkpoint_path)
+    ckpt = torch.load(checkpoint_path, map_location=map_location)
     logging.info("Loading checkpoint: %s" % checkpoint_path)
     logging.info(model.load_state_dict(ckpt["model_params"]))
 
@@ -44,9 +44,9 @@ class SubstanceClassifier:
         self.transforms = tfs.Compose([tfs.ToTensor(),
                                        tfs.Normalize(mean=[0.485, 0.456, 0.406],
                                                      std=[0.229, 0.224, 0.225])])
-        self.model = get_model(self.params.arch, self.params.substances).to('cpu')
+        self.model = get_model(self.params.arch, self.params.substances).to(device)
 
-        load_checkpoint(checkpoint_path, self.model)
+        load_checkpoint(checkpoint_path, self.model, map_location=torch.device('cpu'))
         self.model.eval()
 
     def __repr__(self):
