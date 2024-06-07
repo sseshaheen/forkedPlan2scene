@@ -18,7 +18,7 @@ if __name__ == "__main__":
     conf.add_args(parser)
     parser.add_argument("search_path", help="Path to walk for .arch.json files")
     parser.add_argument("--scene-json", default=False, action="store_true", help="Process scene.json files instead of arch.json files.")
-    parser.add_argument("--export", default=False, action="store_true", help="Export meshes in GLTF format.")
+    parser.add_argument("--export", default=True, action="store_true", help="Export meshes in GLTF format.")
 
     args = parser.parse_args()
     conf.process_args(args)
