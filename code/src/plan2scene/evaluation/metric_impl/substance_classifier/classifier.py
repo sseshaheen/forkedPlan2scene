@@ -59,7 +59,7 @@ class SubstanceClassifier:
         :return: Predicted substance of the image.
         """
         with torch.no_grad():
-            image_tf = self.transforms(image.convert("RGB")).unsqueeze(0).to(self.device)
+            image_tf = self.transforms(image.convert("RGB")).unsqueeze(0).to('cpu')
             output = self.model(image_tf)
             _, pred = torch.max(output, dim=1)
             return self.params.substances[pred.item()]
