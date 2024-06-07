@@ -44,7 +44,7 @@ class SubstanceClassifier:
         self.transforms = tfs.Compose([tfs.ToTensor(),
                                        tfs.Normalize(mean=[0.485, 0.456, 0.406],
                                                      std=[0.229, 0.224, 0.225])])
-        self.model = get_model(self.params.arch, self.params.substances).to(device)
+        self.model = get_model(self.params.arch, self.params.substances).to('cpu')
 
         load_checkpoint(checkpoint_path, self.model, map_location=torch.device('cpu'))
         self.model.eval()
